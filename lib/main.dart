@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_for_feginners/start_screen.dart';
 
-import 'gradient_container.dart';
-
-void main() {
-  runApp(const MaterialApp(
+void main () {
+  runApp(MaterialApp(
     home: Scaffold(
-      body: GradientContainer(
-          color1: Color.fromARGB(255, 23, 5, 64),
-          color2: Color.fromARGB(255, 29, 4, 74)),
+      backgroundColor: Colors.grey[300],
+      body: const StartScreen(),
     ),
-  ));
+  ),);
 }
