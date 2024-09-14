@@ -90,3 +90,78 @@ Besides the equality operator (==) Dart also supports many other key comparison 
     < to check for the value on the left to be smaller than the value on the right (randomNumber < 5 yields true if randomNumber is smaller than 5)
 
     <= to check for the value on the left to be smaller than or equal to the value on the right (randomNumber <= 5 yields true if randomNumber is smaller than 5 or equals 5)
+---
+
+# Using "for" Loops In Lists
+
+Just as you can also use the if keyword inside of lists (to add elements conditionally), you can also use the for keyword to add multiple items into a list:
+
+    final numbers = [5, 6];
+    final myList = [
+      1,
+      2,
+      for (final num in numbers)
+        num
+    ];
+
+In this example, the numbers 5 and 6 will be added to myList (hence myList thereafter is [1, 2, 5, 6]).
+
+This for ... in syntax is a special variation of the for loop that loops through multiple items in a list. You will see it again later in the course - both outside and inside of a list. It will also be explained again later.
+
+The idea behind this loop is to simplify the process of performing some operation on all items in a list.
+
+When used in a list, it's essentially an alternative to the spread operator (...):
+
+```dart
+ final numbers = [5, 6];
+    final myList = [
+      1,
+      2,
+      ...numbers
+    ];
+```
+   
+
+It can be useful in scenarios where values must be transformed before being added to a list - the for ... in loop can then be used instead of map() + spread operator:
+
+```dart
+      final numbers = [5, 6];
+    final myList = [
+      1,
+      2,
+      ...numbers.map((n) {
+        return n * 2; 
+      }) // adds 10 and 12
+    ];
+```
+
+can be replaced with:
+
+```dart
+     final numbers = [5, 6];
+    final myList = [
+      1,
+      2,
+      for (final num in numbers)
+        num * 2 // adds 10 and 12
+    ];
+```
+
+
+As mentioned, you will learn more about for later in the course.
+
+You can also learn more about for ... in inside of lists here: https://github.com/dart-lang/language/blob/master/accepted/2.3/control-flow-collections/feature-specification.md#repetition
+
+
+## Note: A Typo In The Next Lecture
+
+Just a quick note: In the next lecture, in the questions_summary.dart file, there will be a typo.
+
+Instead of writing
+
+    Text(((data['question'] as int) + 1).toString()),
+
+write
+
+    Text(((data['question_index'] as int) + 1).toString()),
+
