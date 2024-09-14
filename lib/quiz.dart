@@ -34,14 +34,18 @@ class _QuizState extends State<Quiz> {
 
   @override
   Widget build(BuildContext context) {
+    Widget selectAns;
+
+    if (activeScreen != "start-screen") {
+      selectAns = QuestionsScreen(onSelectAnswer: chooseAnswer);
+    } else {
+      selectAns = StartScreen(switchScreen);
+    }
+
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.grey[300],
-        body: activeScreen == "start-screen"
-            ? StartScreen(switchScreen)
-            : QuestionsScreen(
-                onSelectAnswer: chooseAnswer,
-              ),
+        body: selectAns,
       ),
     );
   }
