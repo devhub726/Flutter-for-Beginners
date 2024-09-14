@@ -38,7 +38,9 @@ class _QuizState extends State<Quiz> {
     Widget selectScreen = StartScreen(switchScreen);
 
     if (activeScreen == "result-screen") {
-      selectScreen = const ResultScreen();
+      selectScreen = ResultScreen(
+        chosenAnswers: selectedAnswers,
+      );
     } else {
       selectScreen = QuestionsScreen(onSelectAnswer: chooseAnswer);
     }
