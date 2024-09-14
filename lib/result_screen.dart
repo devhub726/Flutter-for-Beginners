@@ -6,7 +6,10 @@ import 'package:google_fonts/google_fonts.dart';
 class ResultScreen extends StatelessWidget {
   final List<String> chosenAnswers;
 
-  const ResultScreen({super.key, required this.chosenAnswers});
+  final void Function() onRestart;
+
+  const ResultScreen(
+      {super.key, required this.chosenAnswers, required this.onRestart});
 
   List<Map<String, Object>> get summaryData {
     final List<Map<String, Object>> summary = [];
@@ -53,7 +56,7 @@ class ResultScreen extends StatelessWidget {
               height: 30,
             ),
             TextButton(
-                onPressed: () {},
+                onPressed: onRestart,
                 child: Text(
                   "Restart Quiz!",
                   style: GoogleFonts.lato(
