@@ -5,7 +5,9 @@ import 'package:intl/intl.dart';
 final formatter = DateFormat('dd/MM/yyyy');
 
 class NewExpense extends StatefulWidget {
-  const NewExpense({super.key});
+  final void Function(Expense expense) onAddExpense;
+
+  const NewExpense({super.key, required this.onAddExpense});
 
   @override
   State<NewExpense> createState() => _NewExpenseState();
@@ -43,7 +45,7 @@ class _NewExpenseState extends State<NewExpense> {
           return AlertDialog(
             title: const Text("Invalid input"),
             content: const Text(
-                "Please make suar a valid title, amount, data, and category was entered."),
+                "Please make sure a valid title, amount, date, and category was entered."),
             actions: [
               TextButton(
                   onPressed: () {
@@ -56,6 +58,11 @@ class _NewExpenseState extends State<NewExpense> {
       );
       return;
     }
+    widget.onAddExpense(Expense(
+        title: _titleController.text,
+        amount: enteredAmount,
+        date: _selectedDate!,
+        category: _selectedCategory));
   }
 
   @override
