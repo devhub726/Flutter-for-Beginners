@@ -26,6 +26,9 @@ class _ExpensesState extends State<Expenses> {
 
   void _openAddExpenseOverlay() {
     showModalBottomSheet(
+      isScrollControlled: true,
+      shape: const BeveledRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.zero)),
       context: context,
       builder: (ctx) {
         return NewExpense(
