@@ -31,6 +31,14 @@ class _NewExpenseState extends State<NewExpense> {
     });
   }
 
+  void _submitExpanseData() {
+    final enteredAmount = double.tryParse(_amountController.text);
+    final amountIsInvalide = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalide ||
+        _selectedDate == null) {}
+  }
+
   @override
   void dispose() {
     _titleController.dispose();
@@ -111,16 +119,15 @@ class _NewExpenseState extends State<NewExpense> {
               ),
               const Spacer(),
               TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Cancel")),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text("Cancel"),
+              ),
               ElevatedButton(
-                  onPressed: () {
-                    print(_titleController.text);
-                    print(_amountController.text);
-                  },
-                  child: const Text("Save Expense"))
+                onPressed: _submitExpanseData,
+                child: const Text("Save Expense"),
+              ),
             ],
           )
         ],
