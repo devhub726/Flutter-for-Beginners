@@ -20,7 +20,7 @@ class Keys extends StatefulWidget {
 class _KeysState extends State<Keys> {
   var _order = 'asc';
   final _todos = [
-    Todo(
+    const Todo(
       'Learn Flutter',
       Priority.urgent,
     ),
@@ -69,6 +69,7 @@ class _KeysState extends State<Keys> {
               // for (final todo in _orderedTodos) TodoItem(todo.text, todo.priority),
               for (final todo in _orderedTodos)
                 CheckableTodoItem(
+                  key: ValueKey(todo.text),
                   todo.text,
                   todo.priority,
                 ),
