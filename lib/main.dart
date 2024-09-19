@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app/Keys/keys.dart';
 
-import 'ui_updates_demo.dart';
-
 void main() {
   runApp(const App());
 }
