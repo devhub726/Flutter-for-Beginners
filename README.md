@@ -1,7 +1,7 @@
-# flutter_for_Beginners
+# MEALS-APP
 
-A new Flutter project.
-
-## Getting Started
-
-T
+## Navigation & Multi-Screen Apps
+### Allowing Users To Navigate Between Screens
+- Managing Screen Stacks
+- Working with Tab Bars
+- Using Side Drawers
