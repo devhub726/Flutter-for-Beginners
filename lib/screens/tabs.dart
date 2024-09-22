@@ -50,12 +50,15 @@ class _TabsScreenState extends State<TabsScreen> {
     });
   }
 
-  void _selectScreen(String identifier) {
+  void _setScreen(String identifier) async {
     Navigator.of(context).pop();
     if (identifier == "filters") {
-      Navigator.of(context).push(MaterialPageRoute(
+      final result =
+          await Navigator.of(context).push<Map<Filter, bool>>(MaterialPageRoute(
         builder: (ctx) => const FilterScreen(),
       ));
+
+      print(result);
     }
   }
 
@@ -77,7 +80,7 @@ class _TabsScreenState extends State<TabsScreen> {
         title: Text(activePageTitle),
       ),
       drawer: MainDrawer(
-        onSelectScreen: _selectScreen,
+        onSelectScreen: _setScreen,
       ),
       body: activePage,
       bottomNavigationBar: BottomNavigationBar(
