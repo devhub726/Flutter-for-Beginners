@@ -8,10 +8,12 @@ import '../models/meal.dart';
 
 class CategoriesScreen extends StatelessWidget {
   final void Function(Meal meal) onToggleFavorite;
-  const CategoriesScreen({super.key, required this.onToggleFavorite});
+  final List<Meal> availableMeal;
+  const CategoriesScreen(
+      {super.key, required this.onToggleFavorite, required this.availableMeal});
 
   void _selectCategory(BuildContext context, Category category) {
-    final filteredMeals = dummyMeals
+    final filteredMeals = availableMeal
         .where((meal) => meal.categories.contains(category.id))
         .toList();
     Navigator.of(context).push(MaterialPageRoute(
