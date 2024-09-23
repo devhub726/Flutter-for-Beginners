@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:meals_app/models/meal.dart';
-import 'package:meals_app/providers/favorites_provider.dart';
 import 'package:meals_app/screens/meal_details.dart';
 import 'package:meals_app/widgets/meal_item.dart';
 
@@ -18,9 +17,6 @@ class MealsScreen extends StatelessWidget {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (ctx) => MealDetailsScreen(
         meal: meal,
-        onToggleFavorite: (meal) {
-          FavoritesMealsNotifier();
-        },
       ),
     ));
   }
