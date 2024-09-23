@@ -17,11 +17,11 @@ class FavoritesMealsNotifier extends StateNotifier<List<Meal>> {
       state = [...state, meal];
     }
   }
-
-  final favoritesMealsProvider =
-      StateNotifierProvider<FavoritesMealsNotifier, List<Meal>>(
-    (ref) {
-      return FavoritesMealsNotifier();
-    },
-  );
 }
+
+final favoritesMealsProvider =
+    StateNotifierProvider<FavoritesMealsNotifier, List<Meal>>(
+  (ref) {
+    return FavoritesMealsNotifier();
+  },
+);
