@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 
 import 'package:shopping_list_app/data/dummy_items.dart';
+import 'package:shopping_list_app/widgets/new_item.dart';
 
-class GorceryLists extends StatelessWidget {
+class GorceryLists extends StatefulWidget {
   const GorceryLists({super.key});
+
+  @override
+  State<GorceryLists> createState() => _GorceryListsState();
+}
+
+class _GorceryListsState extends State<GorceryLists> {
+  void _addItem() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => const NewItem(),
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +25,15 @@ class GorceryLists extends StatelessWidget {
           "Your Gorceries",
           style: TextStyle(color: Colors.grey[700]),
         ),
+        actions: [
+          IconButton(
+            onPressed: _addItem,
+            icon: Icon(
+              Icons.add,
+              color: Colors.grey[700],
+            ),
+          ),
+        ],
       ),
       body: ListView.builder(
         itemCount: gorceryItems.length,
