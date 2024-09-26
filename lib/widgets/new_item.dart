@@ -9,6 +9,12 @@ class NewItem extends StatefulWidget {
 }
 
 class _NewItemState extends State<NewItem> {
+  final _formKey = GlobalKey<FormState>();
+
+  void _saveItem() {
+    _formKey.currentState!.validate();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,6 +28,7 @@ class _NewItemState extends State<NewItem> {
       body: Padding(
         padding: const EdgeInsets.all(12),
         child: Form(
+          key: _formKey,
           child: Column(
             children: [
               TextFormField(
@@ -58,7 +65,7 @@ class _NewItemState extends State<NewItem> {
                 },
               ),
               const SizedBox(
-                height: 12,
+                height: 19,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -153,12 +160,17 @@ class _NewItemState extends State<NewItem> {
                   )
                 ],
               ),
+              const SizedBox(
+                height: 8,
+              ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  _formKey.currentState!.reset();
+                },
                 child: const Text("Reset"),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: _saveItem,
                 child: Container(
                   padding: const EdgeInsets.all(25),
                   decoration: BoxDecoration(
