@@ -137,7 +137,25 @@ class _NewItemState extends State<NewItem> {
                     ),
                   )
                 ],
-              )
+              ),
+              TextButton(
+                onPressed: () {},
+                child: const Text("Reset"),
+              ),
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.all(25),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.secondary,
+                      borderRadius: BorderRadius.circular(12)),
+                  child: const Center(
+                      child: Text(
+                    "Add Item",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  )),
+                ),
+              ),
             ],
           ),
         ),
