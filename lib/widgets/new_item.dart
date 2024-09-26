@@ -48,7 +48,13 @@ class _NewItemState extends State<NewItem> {
                   fillColor: Theme.of(context).colorScheme.secondary,
                 ),
                 validator: (value) {
-                  return "error..";
+                  if (value == null ||
+                      value.isEmpty ||
+                      value.trim().length <= 1 ||
+                      value.trim().length > 50) {
+                    return "Must be between 1 and 50 characters.";
+                  }
+                  return null;
                 },
               ),
               const SizedBox(
@@ -79,6 +85,15 @@ class _NewItemState extends State<NewItem> {
                         fillColor: Theme.of(context).colorScheme.secondary,
                       ),
                       initialValue: "1",
+                      validator: (value) {
+                        if (value == null ||
+                            value.isEmpty ||
+                            int.tryParse(value) == null ||
+                            int.tryParse(value)! <= 0) {
+                          return "Must be a valid, positive number.";
+                        }
+                        return null;
+                      },
                     ),
                   ),
                   const SizedBox(
