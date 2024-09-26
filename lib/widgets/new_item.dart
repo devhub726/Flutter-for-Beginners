@@ -20,10 +20,9 @@ class _NewItemState extends State<NewItem> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
-        child: Center(
-          child: Text(
-            "The Form",
-            style: TextStyle(color: Colors.grey[700]),
+        child: Form(
+          child: Column(
+            children: [],
           ),
         ),
       ),
