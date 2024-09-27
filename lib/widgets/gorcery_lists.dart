@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:shopping_list_app/data/dummy_items.dart';
+import 'package:shopping_list_app/model/gorcery_Items.dart';
 import 'package:shopping_list_app/widgets/new_item.dart';
 
 class GorceryLists extends StatefulWidget {
@@ -11,14 +11,61 @@ class GorceryLists extends StatefulWidget {
 }
 
 class _GorceryListsState extends State<GorceryLists> {
-  void _addItem() {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => const NewItem(),
-    ));
+  final List<GorceryItems> _gorceryItems = [];
+
+  void _addItem() async {
+    var newItem = await Navigator.of(context).push<GorceryItems>(
+      MaterialPageRoute(
+        builder: (context) => const NewItem(),
+      ),
+    );
+
+    if (newItem == null) {
+      return;
+    }
+    setState(() {
+      _gorceryItems.add(newItem);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    Widget mainContent = Center(
+        child: Text(
+      "The [item] is currently unavailable in our inventory.!",
+      style: TextStyle(
+        fontSize: 18,
+        color: Theme.of(context).colorScheme.inversePrimary,
+      ),
+    ));
+
+    if (_gorceryItems.isNotEmpty) {
+      mainContent = ListView.builder(
+        itemCount: _gorceryItems.length,
+        itemBuilder: (ctx, index) {
+          return Column(
+            children: [
+              ListTile(
+                title: Text(
+                  _gorceryItems[index].name,
+                  style: TextStyle(color: Colors.grey[700], fontSize: 18),
+                ),
+                leading: Container(
+                  height: 25,
+                  width: 25,
+                  color: _gorceryItems[index].category.color,
+                ),
+                trailing: Text(
+                  _gorceryItems[index].quantity.toString(),
+                  style: TextStyle(color: Colors.grey[700], fontSize: 18),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -37,35 +84,7 @@ class _GorceryListsState extends State<GorceryLists> {
           ),
         ],
       ),
-      body: ListView.builder(
-        itemCount: gorceryItems.length,
-        itemBuilder: (ctx, index) {
-          return Column(
-            children: [
-              ListTile(
-                title: Text(
-                  gorceryItems[index].name,
-                  style: TextStyle(color: Colors.grey[700], fontSize: 18),
-                ),
-                leading: Container(
-                  height: 25,
-                  width: 25,
-                  color: gorceryItems[index].category.color,
-                ),
-                trailing: Text(
-                  gorceryItems[index].quantity.toString(),
-                  style: TextStyle(color: Colors.grey[700], fontSize: 18),
-                ),
-              ),
-              // Divider(
-              //   indent: 25,
-              //   endIndent: 25,
-              //   color: Theme.of(context).colorScheme.secondary,
-              // )
-            ],
-          );
-        },
-      ),
+      body: mainContent,
     );
   }
 }
