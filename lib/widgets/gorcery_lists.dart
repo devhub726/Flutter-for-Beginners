@@ -28,6 +28,34 @@ class _GorceryListsState extends State<GorceryLists> {
     });
   }
 
+  void _removeIetm(GorceryItems gorceryItem) {
+    final gorceryIndex = _gorceryItems.indexOf(gorceryItem);
+
+    setState(() {
+      _gorceryItems.remove(gorceryItem);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Gorcery deleted.",
+          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+        ),
+        duration: const Duration(seconds: 3),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        action: SnackBarAction(
+          label: "Undo",
+          // backgroundColor: Theme.of(context).colorScheme.secondary,
+          onPressed: () {
+            setState(() {
+              _gorceryItems.insert(gorceryIndex, gorceryItem);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget mainContent = Center(
@@ -43,9 +71,31 @@ class _GorceryListsState extends State<GorceryLists> {
       mainContent = ListView.builder(
         itemCount: _gorceryItems.length,
         itemBuilder: (ctx, index) {
-          return Column(
-            children: [
-              ListTile(
+          return Dismissible(
+            key: ValueKey(_gorceryItems[index].id),
+            onDismissed: (direction) {
+              _removeIetm(_gorceryItems[index]);
+            },
+            background: Container(
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.only(right: 13.5),
+              color: Theme.of(context).colorScheme.secondary,
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              child: Icon(
+                Icons.delete_sweep_outlined,
+                size: 30,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+            child: Card(
+              elevation: 0,
+              color: Theme.of(context).colorScheme.secondary,
+              shape: Border.all(
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              shadowColor: Theme.of(context).colorScheme.primary,
+              child: ListTile(
                 title: Text(
                   _gorceryItems[index].name,
                   style: TextStyle(color: Colors.grey[700], fontSize: 18),
@@ -60,7 +110,7 @@ class _GorceryListsState extends State<GorceryLists> {
                   style: TextStyle(color: Colors.grey[700], fontSize: 18),
                 ),
               ),
-            ],
+            ),
           );
         },
       );
