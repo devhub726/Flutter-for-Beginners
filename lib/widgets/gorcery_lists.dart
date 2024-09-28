@@ -16,6 +16,7 @@ class GorceryLists extends StatefulWidget {
 class _GorceryListsState extends State<GorceryLists> {
   List<GorceryItems> _gorceryItems = [];
   var _isLoading = true;
+  String? _error;
 
   @override
   void initState() {
@@ -24,9 +25,13 @@ class _GorceryListsState extends State<GorceryLists> {
   }
 
   void _loadItems() async {
-    final url = Uri.https(
-        "flutter-prep-19c3b-default-rtdb.firebaseio.com", "shopping-list.json");
+    final url = Uri.https("abc.firebaseio.com", "shopping-list.json");
     final response = await http.get(url);
+    if (response.statusCode >= 400) {
+      setState(() {
+        _error = "Failed to fatch data. Please try again later";
+      });
+    }
     final Map<String, dynamic> listData = json.decode(response.body);
     print(listData);
     final List<GorceryItems> loadedItems = [];
@@ -157,6 +162,17 @@ class _GorceryListsState extends State<GorceryLists> {
           );
         },
       );
+    }
+
+    if (_error != null) {
+      mainContent = Center(
+          child: Text(
+        _error!,
+        style: TextStyle(
+          fontSize: 18,
+          color: Theme.of(context).colorScheme.inversePrimary,
+        ),
+      ));
     }
 
     return Scaffold(
