@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_list_app/data/categories.dart';
 import 'package:shopping_list_app/model/category.dart';
 import 'package:http/http.dart' as http;
+import 'package:shopping_list_app/model/gorcery_Items.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -37,13 +38,18 @@ class _NewItemState extends State<NewItem> {
         ),
       );
 
+      final Map<String, dynamic> resData = json.decode(response.body);
       print(response.body);
       print(response.statusCode);
 
       if (!mounted) {
         return;
       }
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(GorceryItems(
+          id: resData["name"],
+          name: _enteredName,
+          quantity: _enteredQuentity,
+          category: _selectedCategory));
     }
   }
 

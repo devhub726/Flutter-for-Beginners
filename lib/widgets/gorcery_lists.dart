@@ -28,7 +28,7 @@ class _GorceryListsState extends State<GorceryLists> {
     final response = await http.get(url);
     final Map<String, dynamic> listData = json.decode(response.body);
     print(listData);
-    final List<GorceryItems> _loadedItems = [];
+    final List<GorceryItems> loadedItems = [];
 
     for (final gorceryItems in listData.entries) {
       final category = categories.entries
@@ -36,7 +36,7 @@ class _GorceryListsState extends State<GorceryLists> {
             (catItem) => catItem.value.title == gorceryItems.value["category"],
           )
           .value;
-      _loadedItems.add(
+      loadedItems.add(
         GorceryItems(
           id: gorceryItems.key,
           name: gorceryItems.value["name"],
@@ -46,17 +46,24 @@ class _GorceryListsState extends State<GorceryLists> {
       );
     }
     setState(() {
-      _gorceryItems = _loadedItems;
+      _gorceryItems = loadedItems;
     });
   }
 
   void _addItem() async {
-    await Navigator.of(context).push<GorceryItems>(
+    final gorceryItems = await Navigator.of(context).push<GorceryItems>(
       MaterialPageRoute(
         builder: (context) => const NewItem(),
       ),
     );
-    _loadItems();
+
+    if (gorceryItems == null) {
+      return;
+    }
+
+    setState(() {
+      _gorceryItems.add(gorceryItems);
+    });
   }
 
   void _removeIetm(GorceryItems gorceryItem) {
