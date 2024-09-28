@@ -15,6 +15,7 @@ class GorceryLists extends StatefulWidget {
 
 class _GorceryListsState extends State<GorceryLists> {
   List<GorceryItems> _gorceryItems = [];
+  var _isLoading = true;
 
   @override
   void initState() {
@@ -47,6 +48,7 @@ class _GorceryListsState extends State<GorceryLists> {
     }
     setState(() {
       _gorceryItems = loadedItems;
+      _isLoading = false;
     });
   }
 
@@ -103,6 +105,10 @@ class _GorceryListsState extends State<GorceryLists> {
         color: Theme.of(context).colorScheme.inversePrimary,
       ),
     ));
+
+    if (_isLoading) {
+      mainContent = const Center(child: CircularProgressIndicator());
+    }
 
     if (_gorceryItems.isNotEmpty) {
       mainContent = ListView.builder(

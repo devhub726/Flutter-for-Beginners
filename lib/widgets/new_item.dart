@@ -18,10 +18,14 @@ class _NewItemState extends State<NewItem> {
   var _enteredName = "";
   var _enteredQuentity = 1;
   var _selectedCategory = categories[Categories.vegetables]!;
+  var _isSending = false;
 
   void _saveItem() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      setState(() {
+        _isSending = true;
+      });
       final url = Uri.https("flutter-prep-19c3b-default-rtdb.firebaseio.com",
           "shopping-list.json");
       final response = await http.post(
@@ -218,9 +222,11 @@ class _NewItemState extends State<NewItem> {
                   height: 8,
                 ),
                 TextButton(
-                  onPressed: () {
-                    _formKey.currentState!.reset();
-                  },
+                  onPressed: _isSending
+                      ? null
+                      : () {
+                          _formKey.currentState!.reset();
+                        },
                   child: const Text("Reset"),
                 ),
                 GestureDetector(
@@ -230,12 +236,18 @@ class _NewItemState extends State<NewItem> {
                     decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.secondary,
                         borderRadius: BorderRadius.circular(12)),
-                    child: const Center(
-                        child: Text(
-                      "Add Item",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                    )),
+                    child: _isSending
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(),
+                          )
+                        : const Center(
+                            child: Text(
+                            "Add Item",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          )),
                   ),
                 ),
               ],
