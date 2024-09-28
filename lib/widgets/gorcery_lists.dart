@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
+import 'package:flutter/material.dart';
+import 'package:shopping_list_app/data/categories.dart';
 import 'package:shopping_list_app/model/gorcery_Items.dart';
 import 'package:shopping_list_app/widgets/new_item.dart';
+import 'package:http/http.dart' as http;
 
 class GorceryLists extends StatefulWidget {
   const GorceryLists({super.key});
@@ -11,21 +14,49 @@ class GorceryLists extends StatefulWidget {
 }
 
 class _GorceryListsState extends State<GorceryLists> {
-  final List<GorceryItems> _gorceryItems = [];
+  List<GorceryItems> _gorceryItems = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadItems();
+  }
+
+  void _loadItems() async {
+    final url = Uri.https(
+        "flutter-prep-19c3b-default-rtdb.firebaseio.com", "shopping-list.json");
+    final response = await http.get(url);
+    final Map<String, dynamic> listData = json.decode(response.body);
+    print(listData);
+    final List<GorceryItems> _loadedItems = [];
+
+    for (final gorceryItems in listData.entries) {
+      final category = categories.entries
+          .firstWhere(
+            (catItem) => catItem.value.title == gorceryItems.value["category"],
+          )
+          .value;
+      _loadedItems.add(
+        GorceryItems(
+          id: gorceryItems.key,
+          name: gorceryItems.value["name"],
+          quantity: gorceryItems.value["quentity"],
+          category: category,
+        ),
+      );
+    }
+    setState(() {
+      _gorceryItems = _loadedItems;
+    });
+  }
 
   void _addItem() async {
-    var newItem = await Navigator.of(context).push<GorceryItems>(
+    await Navigator.of(context).push<GorceryItems>(
       MaterialPageRoute(
         builder: (context) => const NewItem(),
       ),
     );
-
-    if (newItem == null) {
-      return;
-    }
-    setState(() {
-      _gorceryItems.add(newItem);
-    });
+    _loadItems();
   }
 
   void _removeIetm(GorceryItems gorceryItem) {
@@ -45,7 +76,6 @@ class _GorceryListsState extends State<GorceryLists> {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         action: SnackBarAction(
           label: "Undo",
-          // backgroundColor: Theme.of(context).colorScheme.secondary,
           onPressed: () {
             setState(() {
               _gorceryItems.insert(gorceryIndex, gorceryItem);
