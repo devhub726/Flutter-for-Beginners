@@ -33,6 +33,14 @@ class _GorceryListsState extends State<GroceryLists> {
         _error = "Failed to fatch data. Please try again later";
       });
     }
+
+    if (response.body == "null") {
+      setState(() {
+        _isLoading = false;
+      });
+      return;
+    }
+
     final Map<String, dynamic> listData = json.decode(response.body);
     print(listData);
     final List<GroceryItems> loadedItems = [];
