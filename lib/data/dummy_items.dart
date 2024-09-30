@@ -1,21 +1,21 @@
 import '../model/category.dart';
-import '../model/gorcery_Items.dart';
+import '../model/grocery_items.dart';
 import 'categories.dart';
 
-final gorceryItems = [
-  GorceryItems(
+final groceryItems = [
+  GroceryItems(
     id: "a",
     name: "Milk",
     quantity: 1,
     category: categories[Categories.dairy]!,
   ),
-  GorceryItems(
+  GroceryItems(
     id: "b",
     name: "Bananas",
     quantity: 5,
     category: categories[Categories.fruit]!,
   ),
-  GorceryItems(
+  GroceryItems(
     id: "c",
     name: "ice cream",
     quantity: 1,

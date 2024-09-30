@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping_list_app/data/categories.dart';
 import 'package:shopping_list_app/model/category.dart';
 import 'package:http/http.dart' as http;
-import 'package:shopping_list_app/model/gorcery_Items.dart';
+import 'package:shopping_list_app/model/grocery_items.dart';
 
 class NewItem extends StatefulWidget {
   const NewItem({super.key});
@@ -49,7 +49,7 @@ class _NewItemState extends State<NewItem> {
       if (!mounted) {
         return;
       }
-      Navigator.of(context).pop(GorceryItems(
+      Navigator.of(context).pop(GroceryItems(
           id: resData["name"],
           name: _enteredName,
           quantity: _enteredQuentity,

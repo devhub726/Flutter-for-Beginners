@@ -2,19 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shopping_list_app/data/categories.dart';
-import 'package:shopping_list_app/model/gorcery_Items.dart';
+import 'package:shopping_list_app/model/grocery_items.dart';
 import 'package:shopping_list_app/widgets/new_item.dart';
 import 'package:http/http.dart' as http;
 
-class GorceryLists extends StatefulWidget {
-  const GorceryLists({super.key});
+class GroceryLists extends StatefulWidget {
+  const GroceryLists({super.key});
 
   @override
-  State<GorceryLists> createState() => _GorceryListsState();
+  State<GroceryLists> createState() => _GorceryListsState();
 }
 
-class _GorceryListsState extends State<GorceryLists> {
-  List<GorceryItems> _gorceryItems = [];
+class _GorceryListsState extends State<GroceryLists> {
+  List<GroceryItems> _groceryItems = [];
   var _isLoading = true;
   String? _error;
 
@@ -25,7 +25,8 @@ class _GorceryListsState extends State<GorceryLists> {
   }
 
   void _loadItems() async {
-    final url = Uri.https("abc.firebaseio.com", "shopping-list.json");
+    final url = Uri.https(
+        "flutter-prep-19c3b-default-rtdb.firebaseio.com", "shopping-list.json");
     final response = await http.get(url);
     if (response.statusCode >= 400) {
       setState(() {
@@ -34,7 +35,7 @@ class _GorceryListsState extends State<GorceryLists> {
     }
     final Map<String, dynamic> listData = json.decode(response.body);
     print(listData);
-    final List<GorceryItems> loadedItems = [];
+    final List<GroceryItems> loadedItems = [];
 
     for (final gorceryItems in listData.entries) {
       final category = categories.entries
@@ -43,7 +44,7 @@ class _GorceryListsState extends State<GorceryLists> {
           )
           .value;
       loadedItems.add(
-        GorceryItems(
+        GroceryItems(
           id: gorceryItems.key,
           name: gorceryItems.value["name"],
           quantity: gorceryItems.value["quentity"],
@@ -52,13 +53,13 @@ class _GorceryListsState extends State<GorceryLists> {
       );
     }
     setState(() {
-      _gorceryItems = loadedItems;
+      _groceryItems = loadedItems;
       _isLoading = false;
     });
   }
 
   void _addItem() async {
-    final gorceryItems = await Navigator.of(context).push<GorceryItems>(
+    final gorceryItems = await Navigator.of(context).push<GroceryItems>(
       MaterialPageRoute(
         builder: (context) => const NewItem(),
       ),
@@ -69,16 +70,20 @@ class _GorceryListsState extends State<GorceryLists> {
     }
 
     setState(() {
-      _gorceryItems.add(gorceryItems);
+      _groceryItems.add(gorceryItems);
     });
   }
 
-  void _removeIetm(GorceryItems gorceryItem) {
-    final gorceryIndex = _gorceryItems.indexOf(gorceryItem);
-
+  void _removeItem(GroceryItems groceryItem) async {
+    final gorceryIndex = _groceryItems.indexOf(groceryItem);
+    var isDalete = true;
     setState(() {
-      _gorceryItems.remove(gorceryItem);
+      _groceryItems.remove(groceryItem);
     });
+    if (!mounted) {
+      return;
+    }
+
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -91,13 +96,28 @@ class _GorceryListsState extends State<GorceryLists> {
         action: SnackBarAction(
           label: "Undo",
           onPressed: () {
+            isDalete = false;
             setState(() {
-              _gorceryItems.insert(gorceryIndex, gorceryItem);
+              _groceryItems.insert(gorceryIndex, groceryItem);
             });
           },
         ),
       ),
     );
+
+    await Future.delayed(const Duration(seconds: 3));
+    print(isDalete);
+    if (isDalete) {
+      final url = Uri.https("flutter-prep-19c3b-default-rtdb.firebaseio.com",
+          "shopping-list/${groceryItem.id}.json");
+      var response = await http.delete(url);
+
+      if (response.statusCode >= 400) {
+        setState(() {
+          _groceryItems.insert(gorceryIndex, groceryItem);
+        });
+      }
+    }
   }
 
   @override
@@ -115,14 +135,14 @@ class _GorceryListsState extends State<GorceryLists> {
       mainContent = const Center(child: CircularProgressIndicator());
     }
 
-    if (_gorceryItems.isNotEmpty) {
+    if (_groceryItems.isNotEmpty) {
       mainContent = ListView.builder(
-        itemCount: _gorceryItems.length,
+        itemCount: _groceryItems.length,
         itemBuilder: (ctx, index) {
           return Dismissible(
-            key: ValueKey(_gorceryItems[index].id),
+            key: ValueKey(_groceryItems[index].id),
             onDismissed: (direction) {
-              _removeIetm(_gorceryItems[index]);
+              _removeItem(_groceryItems[index]);
             },
             background: Container(
               alignment: Alignment.centerRight,
@@ -145,16 +165,16 @@ class _GorceryListsState extends State<GorceryLists> {
               shadowColor: Theme.of(context).colorScheme.primary,
               child: ListTile(
                 title: Text(
-                  _gorceryItems[index].name,
+                  _groceryItems[index].name,
                   style: TextStyle(color: Colors.grey[700], fontSize: 18),
                 ),
                 leading: Container(
                   height: 25,
                   width: 25,
-                  color: _gorceryItems[index].category.color,
+                  color: _groceryItems[index].category.color,
                 ),
                 trailing: Text(
-                  _gorceryItems[index].quantity.toString(),
+                  _groceryItems[index].quantity.toString(),
                   style: TextStyle(color: Colors.grey[700], fontSize: 18),
                 ),
               ),

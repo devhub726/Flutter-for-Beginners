@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping_list_app/widgets/gorcery_lists.dart';
+import 'package:shopping_list_app/widgets/grocery_lists.dart';
 import 'theme/light_mode.dart';
 
 void main() {
@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "Flutter Groceries",
       theme: lightMode,
-      home: const GorceryLists(),
+      home: const GroceryLists(),
     );
   }
 }
